@@ -1,0 +1,44 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "idlebrain"
+version = "0.1.0"
+description = "Spiking neural networks that wake up on their own, and learn from dopamine."
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "MIT" }
+authors = [{ name = "idlebrain contributors" }]
+keywords = ["spiking neural network", "SNN", "neuromorphic", "reservoir", "reward learning"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+
+dependencies = [
+    "numpy>=1.22",
+    "scipy>=1.8",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=7.0"]
+
+[project.urls]
+Homepage = "https://github.com/shuiyu67/idlebrain"
+Repository = "https://github.com/shuiyu67/idlebrain"
+Issues = "https://github.com/shuiyu67/idlebrain/issues"
+Changelog = "https://github.com/shuiyu67/idlebrain/blob/main/CHANGELOG.md"
+Mirror = "https://gitee.com/shuiyu1123/idlebrain"
+
+[project.scripts]
+idlebrain = "idlebrain.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["idlebrain*"]
+
+[tool.setuptools.package-data]
+idlebrain = ["py.typed"]
