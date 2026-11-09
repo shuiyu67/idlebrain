@@ -1,5 +1,11 @@
 # idlebrain
 
+[![CI](https://github.com/shuiyu67/idlebrain/actions/workflows/ci.yml/badge.svg)](https://github.com/shuiyu67/idlebrain/actions/workflows/ci.yml)
+[![Release](https://img.shields.io/github/v/release/shuiyu67/idlebrain?color=blue)](https://github.com/shuiyu67/idlebrain/releases)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![Python](https://img.shields.io/badge/python-3.9%2B-blue.svg)](pyproject.toml)
+[![Gitee mirror](https://img.shields.io/badge/mirror-gitee.com%2Fshuiyu1123-c71d23.svg)](https://gitee.com/shuiyu1123/idlebrain)
+
 Spiking neural networks that **wake up on their own**, then learn from dopamine.
 
 No input. No external clock. No pretrained weights. Just neurons with slightly
