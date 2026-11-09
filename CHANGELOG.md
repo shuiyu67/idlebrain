@@ -22,6 +22,15 @@ versioning follows [SemVer](https://semver.org/).
 - 37 unit tests on the standard library only.
 - `Trainer.fit(keep_best=True)` restores the best checkpoint automatically.
 
+### Fixed
+
+- Accuracy assertions in the test suite no longer flip on a single sample.
+  `Task.evaluate` draws fresh samples from an unseeded generator, so with the
+  previous 20 samples per class one flipped sample moved the score by 2.5
+  points and the same network passed on one interpreter and failed on another.
+  The accuracy tests now use 50 samples per class with a pinned evaluation RNG;
+  the thresholds (0.95 and 0.90) are unchanged.
+
 ### Known limitations
 
 - Ten-class accuracy is 35%; the network learns two classes perfectly and

@@ -128,12 +128,19 @@ class TestDynamics(unittest.TestCase):
 
 class TestLearning(unittest.TestCase):
     def test_two_classes_learned(self):
-        """The headline claim: with two well-separated classes it reaches 100%."""
+        """The headline claim: with two well-separated classes it reaches 100%.
+
+        ``n_per_class`` is deliberately large and the evaluation RNG is pinned:
+        with 20 samples per class a single flipped sample costs 2.5 points, so
+        the same network scored anywhere between 0.90 and 1.00 across runs. At
+        50 samples the measurement converges on the network's real accuracy and
+        the 0.95 threshold is met with margin.
+        """
         net = SpikingNetwork(small_config(), seed=11)
         net.warmup(3000)
         task = PatternTask(noise=0.10, n=2)
         Trainer(net, task, seed=5).fit(epochs=800, eval_every=800, verbose=False)
-        self.assertGreaterEqual(task.evaluate(net, 20), 0.95)
+        self.assertGreaterEqual(task.evaluate(net, 50, rng=np.random.default_rng(2024)), 0.95)
 
     def test_predict_returns_valid_class(self):
         net = SpikingNetwork(small_config(), seed=11)
@@ -253,7 +260,11 @@ class TestTasks(unittest.TestCase):
         net = SpikingNetwork(small_config(), seed=21)
         net.warmup(2000)
         Trainer(net, task, seed=2).fit(epochs=500, eval_every=500, verbose=False)
-        self.assertGreaterEqual(task.evaluate(net, 20), 0.9)
+        # 50 samples per class, pinned RNG: this configuration measures
+        # ~0.95-0.98 with a spread of ~0.015, so 0.9 holds with margin.
+        self.assertGreaterEqual(
+            task.evaluate(net, 50, rng=np.random.default_rng(2025)), 0.9
+        )
 
 
 class TestTrainerBehaviour(unittest.TestCase):
@@ -263,7 +274,7 @@ class TestTrainerBehaviour(unittest.TestCase):
         trainer = Trainer(net, task, seed=4)
         h = trainer.fit(epochs=400, eval_every=100, verbose=False, keep_best=True)
         # whatever the final episode did, we should end up at the best score seen
-        end = task.evaluate(net, 15)
+        end = task.evaluate(net, 40, rng=np.random.default_rng(2026))
         self.assertGreaterEqual(end, h.best_accuracy - 0.15)
 
     def test_history_records_checkpoints(self):
